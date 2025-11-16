@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8nrwhhg0xurw"]
+
+[ext_resource type="Script" uid="uid://vwla5t4y0bp2" path="res://wave/wave.gd" id="1_clcbl"]
+[ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="2_eyas6"]
+[ext_resource type="Script" uid="uid://lauqf40dk2dq" path="res://wave/ray_cast_2d.gd" id="3_3d5gf"]
+[ext_resource type="Script" uid="uid://bvfeyitrpaf0a" path="res://wave/gotofloor.gd" id="4_jgm86"]
+[ext_resource type="Script" uid="uid://c44ixuah6ua1m" path="res://wave/wave_shape.gd" id="5_8tkod"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jgm86"]
+size = Vector2(16, 16)
+
+[node name="wave" type="RigidBody2D"]
+collision_mask = 3
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+custom_integrator = true
+contact_monitor = true
+max_contacts_reported = 2
+script = ExtResource("1_clcbl")
+
+[node name="Label" type="Label" parent="."]
+offset_top = -23.0
+offset_right = 40.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jgm86")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("2_eyas6")
+
+[node name="Raycasts" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="Raycasts"]
+position = Vector2(0, -3)
+rotation = -1.5708
+target_position = Vector2(-4.34399e-05, 12)
+collision_mask = 3
+script = ExtResource("3_3d5gf")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -1)
+script = ExtResource("5_8tkod")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+position = Vector2(0, 8)
+polygon = PackedVector2Array(0, -16, -16, 0, 16, 0)
+
+[node name="Polygon2D" type="Polygon2D" parent="Area2D"]
+position = Vector2(0, 8)
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="RayCast2D" type="RayCast2D" parent="Area2D"]
+position = Vector2(0, 1)
+rotation = -1.5708
+collision_mask = 2
+
+[node name="gotofloor" type="Node2D" parent="."]
+scale = Vector2(-0.840865, 0.201449)
+script = ExtResource("4_jgm86")
+
+[node name="floor_check1" type="RayCast2D" parent="gotofloor"]
+position = Vector2(8.32476, 0)
+target_position = Vector2(0, 44.6763)
+script = ExtResource("3_3d5gf")
+floor_check = true
+
+[node name="floor_check2" type="RayCast2D" parent="gotofloor"]
+target_position = Vector2(0, 44.6763)
+script = ExtResource("3_3d5gf")
+floor_check = true
+
+[node name="floor_check3" type="RayCast2D" parent="gotofloor"]
+position = Vector2(-8, 0)
+target_position = Vector2(0, 44.6763)
+script = ExtResource("3_3d5gf")
+floor_check = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -8.9407e-08)
+scale = Vector2(0.9, 0.9)
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

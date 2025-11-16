@@ -1,0 +1,118 @@
+[gd_scene load_steps=7 format=4 uid="uid://dhwa718nedm0l"]
+
+[ext_resource type="Script" uid="uid://q7iwpbngebq2" path="res://player/player.gd" id="1_1oj5k"]
+[ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="2_yx7mw"]
+[ext_resource type="PackedScene" uid="uid://b8nrwhhg0xurw" path="res://wave/wave.tscn" id="3_ykeeq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yx7mw"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ykeeq"]
+texture = ExtResource("2_yx7mw")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+7:6/0 = 0
+0:7/0 = 0
+0:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:7/0 = 0
+1:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:7/0 = 0
+2:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:7/0 = 0
+3:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:7/0 = 0
+4:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:7/0 = 0
+5:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+6:7/0 = 0
+6:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:7/0 = 0
+7:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+62:52/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_6bm6p"]
+physics_layer_0/collision_layer = 3
+sources/0 = SubResource("TileSetAtlasSource_ykeeq")
+
+[node name="Node2D" type="Node"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(739, 432)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_1oj5k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(2, 0)
+shape = SubResource("CircleShape2D_yx7mw")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(3, -1)
+scale = Vector2(0.1875, 0.171875)
+texture = ExtResource("2_yx7mw")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+zoom = Vector2(2, 2)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(460, -40)
+tile_map_data = PackedByteArray("AAD//yMAAAADAAcAAAAAACMAAAADAAcAAAABACIAAAADAAcAAAACACIAAAADAAcAAAADACIAAAADAAcAAAAEACIAAAADAAcAAAAFACIAAAADAAcAAAAGACIAAAADAAcAAAAHACIAAAADAAcAAAAIACIAAAADAAcAAAAJACIAAAADAAcAAAAKACIAAAADAAcAAAALACIAAAADAAcAAAAMACIAAAADAAcAAAANACIAAAADAAcAAAAOACIAAAADAAcAAAAPACIAAAADAAcAAAAQACIAAAADAAcAAAARACIAAAADAAcAAAASACIAAAADAAcAAAATACIAAAADAAcAAAAUACIAAAADAAcAAAAVACIAAAADAAcAAAAWACIAAAADAAcAAAAXACIAAAADAAcAAAAYACIAAAADAAcAAAAZACIAAAADAAcAAAAaACIAAAADAAcAAAAbACIAAAADAAcAAAAcACIAAAADAAcAAAAdACIAAAADAAcAAAAeACIAAAADAAcAAAAAACIAAAADAAcAAAD//yIAAAADAAcAAAD//yEAAAADAAcAAAD//yAAAAADAAcAAAD//x8AAAADAAcAAAD//x4AAAADAAcAAAD//x0AAAADAAcAAAD//xwAAAADAAcAAAD//xsAAAADAAcAAAD//xoAAAADAAcAAAAeACMAAAADAAcAAAAeACQAAAADAAcAAAAeACUAAAADAAcAAAAeACYAAAADAAcAAAAeACcAAAADAAcAAAAeACgAAAADAAcAAAAeACkAAAADAAcAAAAeACoAAAADAAcAAAAfACoAAAADAAcAAAAfACsAAAADAAcAAAAeACsAAAADAAcAAAAAACQAAAADAAcAAAD//yQAAAADAAcAAAD//yUAAAADAAcAAAD//yYAAAADAAcAAAD//ycAAAADAAcAAAD//ygAAAADAAcAAAD+/ygAAAADAAcAAAD+/ykAAAADAAcAAAD+/yoAAAADAAcAAAD+/ysAAAADAAcAAAD+/ywAAAADAAcAAAD+/y0AAAADAAcAAAAAACUAAAADAAcAAAAAACYAAAADAAcAAAAAACcAAAADAAcAAAAAACgAAAADAAcAAAAAACkAAAADAAcAAAD//ykAAAADAAcAAAAAACoAAAADAAcAAAD//yoAAAADAAcAAAD//ysAAAADAAcAAAD//ywAAAADAAcAAAAAACwAAAADAAcAAAAAACsAAAADAAcAAAAeACEAAAADAAcAAAAeACAAAAADAAcAAAAdACAAAAADAAcAAAAdAB8AAAADAAcAAAAdAB4AAAADAAcAAAAdAB0AAAADAAcAAAAeABwAAAADAAcAAAAeABsAAAADAAcAAAAeABoAAAADAAcAAAAeABkAAAADAAcAAAAfABgAAAADAAcAAAAfABcAAAADAAcAAAAeAB8AAAADAAcAAAAeAB4AAAADAAcAAAAeAB0AAAADAAcAAAAdACEAAAADAAcAAAAdABwAAAADAAcAAAAdABsAAAADAAcAAAAdABoAAAADAAcAAAAdABkAAAADAAcAAAAeABgAAAADAAcAAAAeABcAAAADAAcAAAAdABcAAAADAAcAAAAdABgAAAADAAcAAAA=")
+tile_set = SubResource("TileSet_6bm6p")
+
+[node name="wave" parent="." instance=ExtResource("3_ykeeq")]
+position = Vector2(571, 447)
+lin_veloc = Vector2(-400, 0)
+size = 80.0
