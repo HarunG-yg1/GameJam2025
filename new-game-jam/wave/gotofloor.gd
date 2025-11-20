@@ -1,6 +1,6 @@
 extends Node2D
 var is_onfloor := false
-
+var original_down_rotation : float
 var array : Array
 var array2 : Array
 @onready var wave = $".."
@@ -8,6 +8,7 @@ var array2 : Array
 # Called when the node enters the scene tree for the first time.
 # 
 func _ready() -> void:
+	original_down_rotation = wave.rotation + deg_to_rad(90)
 	for i in get_children():
 		#print("nigger")
 		i.connect("collide",_on_ray_cast_2d_collide)
@@ -18,46 +19,38 @@ func _ready() -> void:
 
 func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D):
 	if (theColided is TileMapLayer):
-		print(new_dir)
-		var dir_x : int = wave.lin_veloc.x/abs(wave.lin_veloc.x)
-		
-		if abs(dir_x) != 1:
-			dir_x = 0
-		var dir_y : int = wave.lin_veloc.y/abs(wave.lin_veloc.y)
-		if abs(dir_y) != 1:
-			dir_y= 0
-		var adjusted_rotation =  Vector2(abs(new_dir.y)* dir_x , abs(new_dir.x)* dir_y )
-		if adjusted_rotation.y ==  0:
-			adjusted_rotation.y= (new_dir.x * dir_x)
-		if adjusted_rotation.x ==  0:
-			adjusted_rotation.x= new_dir.y * dir_y
-		if wave.lin_veloc.angle() !=  adjusted_rotation.angle():
-			print("lovemiggers")
 
-			wave.lin_veloc =  adjusted_rotation.normalized() * wave.lin_veloc.length() #* dir_x * dir_y 
-
-			if wave.lin_veloc.angle() < deg_to_rad(0) :
-				print("lovemiggers1")
-				if abs(rad_to_deg(wave.lin_veloc.angle())) > 90:
-					wave.rotation = (((wave.lin_veloc.angle())) - deg_to_rad(180) )
-					
-				else:
-					wave.rotation = (-((wave.lin_veloc.angle())) - deg_to_rad(90))
+	
+		wave.rotation = new_dir.angle() + deg_to_rad(90)
+		var angle_diff : int = rad_to_deg(wave.rotation - wave.lin_veloc.angle())
 		
-			else:
-				
-				print("lovemiggers2")
-				#print(rad_to_deg(wave.lin_veloc.angle()))
-				if rad_to_deg(wave.lin_veloc.angle()) > 90:
-					wave.rotation = (-((wave.lin_veloc.angle())) + deg_to_rad(90)) 
-				else:
-					wave.rotation = ((wave.lin_veloc.angle())) 
-			# + deg_to_rad(90)
-			#wave.no_contact_list[0].hitted = false
-			if new_dir.y > 0:
-				wave.rotation += deg_to_rad(180)
+		
+		
+		if floor(abs(angle_diff)) != 0 and (ceil(abs(angle_diff))) != 180:
 			
-			wave.position += 0.8* Vector2(cos(global_rotation + deg_to_rad(90)),sin(global_rotation + deg_to_rad(90)))
+			
+			print(angle_diff)
+			wave.linear_velocity *= 0
+			if abs(angle_diff) < 90:
+				wave.lin_veloc =  Vector2(cos(wave.rotation),sin(wave.rotation)).normalized() * wave.lin_veloc.length() #* dir_x * dir_y 
+			else:
+				wave.lin_veloc =  Vector2(cos(wave.rotation+deg_to_rad(180)),sin(wave.rotation+deg_to_rad(180))).normalized() * wave.lin_veloc.length() #* dir_x * dir_y 
+			
+			if abs((rad_to_deg(abs(original_down_rotation - (wave.lin_veloc.angle()))))) < 90:
+				wave.speed_modifier = 1 + abs((rad_to_deg(abs(original_down_rotation - (wave.lin_veloc.angle())))))/90
+				
+			else:
+				wave.speed_modifier = 1 / (abs((rad_to_deg(abs(original_down_rotation - (wave.lin_veloc.angle())))))/90)
+			wave.position += wave.lin_veloc.normalized()*2
+			wave_waveshape.get_size()
+			#print("nigga")
+			#print(wave.speed_modifier)
+			#print(rad_to_deg(abs(wave.rotation - wave.lin_veloc.angle())))
+			#print(rad_to_deg(original_down_rotation))
+			#wave.no_contact_list[0].hitted = false
+
+			
+		#wave.position += 0.8* Vector2(cos(global_rotation + deg_to_rad(90)),sin(global_rotation + deg_to_rad(90)))
 			#wave.linear_velocity *= 1.5
 		
 			
@@ -76,7 +69,7 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 			wave.spawn = false
 			theColided.spawn = false
 			var new_wave = wave.original_wave.instantiate().duplicate()
-			new_wave.rotation = (wave.lin_veloc).angle()
+			new_wave.rotation = (wave.rotation)
 			new_wave.global_position = theColided.global_position# - wave.lin_veloc.normalized()*16 
 			
 			new_wave.size = wave.size + theColided.size
@@ -93,7 +86,7 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 			theColided.set_collision_layer_value(1,false)
 
 			#wave.move =false
-			print(80/(theColided.lin_veloc.length()+wave.lin_veloc.length()))
+			#print(80/(theColided.lin_veloc.length()+wave.lin_veloc.length()))
 			await get_tree().create_timer(80/(theColided.lin_veloc.length()+wave.lin_veloc.length())).timeout 
 			
 			wave.set_collision_layer_value(1,true)
@@ -112,8 +105,9 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 func _on_ray_cast_2d_uncollide(raycast:RayCast2D,new_dir:Vector2):
 	for i in get_children():
 		if i.is_colliding():
-			print(i)
+			#print(i)
 			i.hitted = false
+			
 	if raycast not in array2:
 		array2.append(raycast)
 		#print('g')
