@@ -5,6 +5,7 @@ var spawn : = true
 var no_contact_list : Array
 var original_wave = preload("res://wave/wave.tscn")
 var reflect_n_diffract := false
+var old_lin_veloc : Vector2
 var timer : float
 var speed_modifier := 1.0
 var floor_time := 0.0
@@ -91,7 +92,7 @@ func _process(delta: float) -> void:
 							new_wave.global_position =  no_contact_list[i].global_position - lin_veloc.normalized()*16 # - 2.5* Vector2(cos(gotofloor.rotation + deg_to_rad(90)),sin(gotofloor.rotation + deg_to_rad(90))) 
 							new_wave.rotation = rotation#(-lin_veloc).angle()
 							new_wave.size = new_size
-							new_wave.lin_veloc = -lin_veloc
+							new_wave.lin_veloc = old_lin_veloc
 							
 							get_parent().add_child(new_wave)
 							new_wave.apply_impulse(-lin_veloc)
@@ -110,9 +111,11 @@ func _process(delta: float) -> void:
 	
 
 func _physics_process(delta: float) -> void:
+	#print(linear_velocity)
+	#print("hello")
 	if get_colliding_bodies().size() > 0 and raycast.get_collider() is TileMapLayer:
-		global_position += (raycast.get_collision_point()-global_position).normalized() * 8
-	if get_colliding_bodies().size() > 0 and gotofloor.is_onfloor and contact_list.size() == 0 :
+		global_position -= (raycast.get_collision_point()-global_position).normalized() * 8
+	if get_colliding_bodies().size() > 0 and gotofloor.is_onfloor and contact_list.size() == 0  and !(raycast.get_collider() is TileMapLayer):
 		
 			
 		#print(get_colliding_bodies())
@@ -120,11 +123,6 @@ func _physics_process(delta: float) -> void:
 		#gotofloor.is_onfloor = true
 		
 	if !gotofloor.is_onfloor:
-		
-		#collision.disabled = false
-		#floor_time = 0
-		#print(name + str(gotofloor.is_onfloor))
-
 		if linear_velocity.length() < 600:
 			
 			apply_impulse(-150*Vector2(cos(gotofloor.global_rotation + deg_to_rad(90)),sin(gotofloor.global_rotation + deg_to_rad(90))))
@@ -150,18 +148,20 @@ func _physics_process(delta: float) -> void:
 
 func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:Node2D) -> void:
 	
-	if (theColided is TileMapLayer) and gotofloor.is_onfloor:
+	if (theColided is TileMapLayer) and gotofloor.is_onfloor and !the_raycast.floor_check:
 		
 		#print(the_raycast.order)
-		
-		lin_veloc = new_dir*lin_veloc.length()
-		var angle_diff : int = rad_to_deg(rotation - lin_veloc.angle())
-		if angle_diff != 0 and  angle_diff != 180:
-			if abs(angle_diff) < 90:
-				lin_veloc =  Vector2(cos(rotation),sin(rotation)).normalized() * lin_veloc.length()
+		if !reflect_n_diffract:
+			old_lin_veloc = lin_veloc
+			lin_veloc = new_dir*lin_veloc.length()
+			var angle_diff : int = rad_to_deg(rotation - lin_veloc.angle())
+			if floor(abs(angle_diff)) != 0 and (ceil(abs(angle_diff))) != 180 and  (ceil(abs(angle_diff))) != 179:
+
+				if abs(angle_diff) < 90:
+					lin_veloc =  Vector2(cos(rotation),sin(rotation)).normalized() * lin_veloc.length()
 				
-			else:
-				lin_veloc =  Vector2(cos(rotation+deg_to_rad(180)),sin(rotation+deg_to_rad(180))).normalized() * lin_veloc.length() #* dir_x * dir_y 
+				else:
+					lin_veloc =  Vector2(cos(rotation+deg_to_rad(180)),sin(rotation+deg_to_rad(180))).normalized() * lin_veloc.length() #* dir_x * dir_y 
 		contact_list.append(the_raycast)
 		reflect_n_diffract = true
 
@@ -205,7 +205,7 @@ func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:No
 			
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	#queue_free()
+	queue_free()
 	pass # Replace with function body.
 
 

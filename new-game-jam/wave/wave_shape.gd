@@ -38,7 +38,8 @@ func get_size():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-
+	if wave.floor_time > 0.25:
+		monitoring = true
 	for i in hittedArray:
 		#print(hittedArray)
 		#print("half_width")
@@ -71,10 +72,13 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player:
-		print("yo")
+	if body is Player and wave.gotofloor.is_onfloor:
+		
 		body.on_wave = wave
-		body.velocity += wave.linear_velocity
+		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7:
+			body.velocity += wave.linear_velocity * 0.8
+		else:
+			body.velocity = wave.linear_velocity * 0.8
 	if body is TileMapLayer || (body is Wave and body.lin_veloc.angle() != wave.lin_veloc.angle()):
 		hittedArray.append(raycast.get_collision_point())
 
@@ -83,6 +87,6 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_body_exited(body: Node2D) -> void:
 	if body is Player:
-		print("yo")
+
 		body.on_wave = null
 	pass # Replace with function body.

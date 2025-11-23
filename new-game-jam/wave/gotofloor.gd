@@ -26,10 +26,11 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 		
 		
 		
-		if floor(abs(angle_diff)) != 0 and (ceil(abs(angle_diff))) != 180:
+		if floor(abs(angle_diff)) != 360 and floor(abs(angle_diff)) != 0 and (ceil(abs(angle_diff))) != 180 and  (ceil(abs(angle_diff))) != 179:
 			
 			
-			print(angle_diff)
+
+			
 			wave.linear_velocity *= 0
 			if abs(angle_diff) < 90:
 				wave.lin_veloc =  Vector2(cos(wave.rotation),sin(wave.rotation)).normalized() * wave.lin_veloc.length() #* dir_x * dir_y 
@@ -43,15 +44,6 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 				wave.speed_modifier = 1 / (abs((rad_to_deg(abs(original_down_rotation - (wave.lin_veloc.angle())))))/90)
 			wave.position += wave.lin_veloc.normalized()*2
 			wave_waveshape.get_size()
-			#print("nigga")
-			#print(wave.speed_modifier)
-			#print(rad_to_deg(abs(wave.rotation - wave.lin_veloc.angle())))
-			#print(rad_to_deg(original_down_rotation))
-			#wave.no_contact_list[0].hitted = false
-
-			
-		#wave.position += 0.8* Vector2(cos(global_rotation + deg_to_rad(90)),sin(global_rotation + deg_to_rad(90)))
-			#wave.linear_velocity *= 1.5
 		
 			
 		is_onfloor = true
@@ -63,8 +55,8 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 		
 	elif (theColided is Wave):
 		#print("llaa")
-		print(theColided.lin_veloc.normalized())
-		print(wave.lin_veloc.normalized())
+		#print(theColided.lin_veloc.normalized())
+		#print(wave.lin_veloc.normalized())
 		if theColided.lin_veloc.normalized() == wave.lin_veloc.normalized()  and wave.spawn:
 			wave.spawn = false
 			theColided.spawn = false
