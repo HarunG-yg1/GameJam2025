@@ -1,7 +1,7 @@
 class_name PlayerStateMachine
 extends Node
 var state_action
-var states : Array[String] = ["moving","idle","dash","jumpin","falling","hit","ride_wave"]
+var states : Array[String] = ["moving","idle","dash","jumpin","falling","hit","ride_wave","harpooning"]
 var state : String = "idle"
 var old_state : String 
 
@@ -29,7 +29,7 @@ func state_enterer(state_here:String):
 
 func change_state(new_state):
 	
-	if new_state == null || new_state == state:
+	if new_state == null || new_state == state || new_state not in states:
 		return
 	old_state = state
 	state_action.Exit()
@@ -57,48 +57,50 @@ class idle extends state_class:
 
 		if (guy1.velocity.length()) > 1 and !guy1.jumping:
 			if guy1.on_wave == null:
-				guy1.velocity.x -= guy1.velocity.x/15  
+				guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/15  
 			else:
-				guy1.velocity.x -= guy1.velocity.x/75
+				guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/75 
 			if abs(guy1.velocity.x) < 1:
 				guy1.velocity.x = 0
 		if guy1.direction.length() > 0.0:
 			
 			return "moving"
-		if( (guy1.velocity.normalized() - guy1.grav_dir).length() < 1 and guy1.velocity.length() > 0)|| (!guy1.is_on_floor() and !guy1.jumping):
+		if  guy1.on_air_time >0.1:  #and (guy1.velocity.normalized() - guy1.grav_dir).length() < 0.1 :#||  (guy1.velocity * abs(guy1.grav_dir)).length() <= 10:
 			return "falling"
-		if guy1.jumping and guy1.is_on_floor():
+		if guy1.jumping:
 			return "jumpin"
 		if guy1.hitting and guy1.hit_timer <=0.01 and guy1.on_wave == null:
 			return "hit"
 		if guy1.on_wave!= null:
 			return "ride_wave"
+		if guy1.aim.harpoon:
+			return "harpooning"
 	func Exit():
 		pass
 
 
 class moving extends state_class:
-	static var air_time : float
+
 	func Enter():
 		pass
 	func Process(_delta):
-		if !guy1.is_on_floor():
-			air_time += _delta
-		else:
-			air_time = 0
+
+
 		guy1.move(guy1.direction,1)
 		if guy1.direction.length() == 0.0:
 			return "idle"
 		elif guy1.run and !guy1.finish_run:
 			return "dash"
-		if guy1.jumping and guy1.is_on_floor():
+		if guy1.jumping:
 			return "jumpin"
-		if (air_time > 0.05 and (guy1.velocity.normalized() - guy1.grav_dir).length() < 1 and guy1.velocity.length() > 0) || (air_time > 0.05 and !guy1.jumping):
+		if  guy1.on_air_time >0.25:#  and (guy1.velocity.normalized() - guy1.grav_dir).length() < 0.1 ||  (guy1.velocity * abs(guy1.grav_dir)).length() <= 10:
 			return "falling"
 		if guy1.hitting and guy1.hit_timer <=0.01 and guy1.on_wave == null:
 			return "hit"
 		if guy1.on_wave!= null:
 			return "ride_wave"
+		if guy1.aim.harpoon:
+			return "harpooning"
 	func Exit():
 		pass
 
@@ -132,22 +134,25 @@ class dash extends state_class:
 		pass
 
 class jumpin extends state_class:
-	static var on_air : float
+	
 	func Enter():
-		on_air = 0.05
+		guy1.on_air_time = 0.1
 		guy1.velocity *= abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x))
 		guy1.velocity += guy1.JUMP_VELOCITY * (-guy1.grav_dir)
 		
 		pass
 	func Process(_delta):
-		on_air -= _delta
-		if !guy1.is_on_floor() and on_air < 0:
+	
+		if !guy1.is_on_floor() and guy1.on_air_time >0.2:
 			guy1.velocity += guy1.get_gravity()* _delta
+		elif guy1.is_on_floor():
+			return "moving"
 			
 		guy1.move(guy1.direction ,1)
-		if ((guy1.velocity.normalized() - guy1.grav_dir).length() < 1 and guy1.velocity.length() > 0 )|| (guy1.is_on_floor() and on_air < 0):
+		if  guy1.on_air_time >0.2  and (guy1.velocity.normalized() - guy1.grav_dir).length() < 0.1 ||  (guy1.velocity * abs(guy1.grav_dir)).length() <= 10:
 			guy1.jumping =  false
 			return "falling"
+		
 		elif guy1.run and !guy1.finish_run:
 			return "dash"
 		if guy1.hitting and guy1.hit_timer <=0.01 and guy1.on_wave == null:
@@ -155,6 +160,8 @@ class jumpin extends state_class:
 		if guy1.on_wave!= null:
 			guy1.jumping =  false
 			return "ride_wave"
+		if guy1.aim.harpoon:
+			return "harpooning"
 	func Exit():
 		
 		pass
@@ -179,7 +186,8 @@ class falling extends state_class:
 			return "hit"
 		if guy1.on_wave!= null:
 			return "ride_wave"
-
+		if guy1.aim.harpoon:
+			return "harpooning"
 	func Exit():
 		guy1.falling = false
 
@@ -192,6 +200,7 @@ class hit extends state_class:
 	
 	static var hitted : bool = false
 	func Enter():
+		guy1.hurtbox.monitoring = true
 		deflect_distance = 250
 		if (recorded_velocity).length() > deflect_distance and (recorded_velocity).length() < 600:
 			deflect_distance = (recorded_velocity).length()
@@ -242,7 +251,7 @@ class hit extends state_class:
 			#print(guy1.velocity)
 
 	func Exit():
-		
+		guy1.hurtbox.monitoring = false
 		guy1.hit_timer = 0.25
 		guy1.hitting = false
 
@@ -255,12 +264,6 @@ class ride_wave extends state_class:
 		timer = 0.12
 		dir_multiplier = Vector2(1,1)
 		old_rotation = guy1.rotation
-	#	if abs(sin(guy1.on_wave.rotation+deg_to_rad(90)))**2 < 0.5:
-	#		dir_multiplier.x = 0.7
-	#	if abs(cos(guy1.on_wave.rotation+deg_to_rad(90)))**2 < 0.5:
-	#		dir_multiplier.y = 0.7
-	#	print(dir_multiplier)
-		#Vector2(sin(guy1.on_wave.rotation+deg_to_rad(90)),cos(guy1.on_wave.rotation+deg_to_rad(90)))
 
 		pass
 	func Process(_delta):
@@ -274,10 +277,35 @@ class ride_wave extends state_class:
 		if guy1.on_wave == null:
 			timer -= _delta
 		if timer <=0:
-			print(guy1.velocity.length())
+		#	print(guy1.velocity.length())
 			return "falling"
-		pass
+		if guy1.aim.harpoon:
+			return "harpooning"
+		
 	func Exit():
 		guy1.rotation = old_rotation 
 		#wguy1.velocity *= 1.2
 		pass
+
+class harpooning extends state_class:
+	
+	static var harpoon_time : float = 0.5
+	static var swing_speed : Vector2
+	func Enter():
+		guy1.hurtbox.monitoring = true
+		harpoon_time = 0.5
+		
+		guy1.velocity = guy1.aim.aim_to_cursor * 2000
+		swing_speed = guy1.aim.aim_to_cursor * 2000
+	func Process(_delta):
+		if guy1.velocity.length() > swing_speed.length()/10:
+			guy1.velocity -= swing_speed/1.5* _delta
+			#aprint(guy1.velocity)
+		
+		harpoon_time -= _delta
+		if harpoon_time < 0:
+			return "falling"
+	func Exit():
+		guy1.hurtbox.monitoring = false
+		pass
+		

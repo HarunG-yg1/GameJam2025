@@ -89,7 +89,7 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 				i.hitted = false
 				array2.clear()
 				array.clear()
-			is_onfloor = true
+			#is_onfloor = true
 			
 	
 	

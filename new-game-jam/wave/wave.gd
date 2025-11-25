@@ -22,7 +22,6 @@ var dir : Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	timer = 10/lin_veloc.length()
-	print()
 	$Label.text = name
 	collision.shape = collision.shape.duplicate(true)
 	collision.shape.size.y = size
@@ -51,13 +50,15 @@ func _ready() -> void:
 		i.connect("collide",_on_ray_cast_2d_collide)
 	
 	add_collision_exception_with(%CharacterBody2D)
+	if lin_veloc.length() < 100:
+		queue_free()
 	#pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	
-
+	
 
 		#print(lin_veloc)
 		
@@ -123,6 +124,7 @@ func _physics_process(delta: float) -> void:
 		#gotofloor.is_onfloor = true
 		
 	if !gotofloor.is_onfloor:
+		visible = false
 		if linear_velocity.length() < 600:
 			
 			apply_impulse(-150*Vector2(cos(gotofloor.global_rotation + deg_to_rad(90)),sin(gotofloor.global_rotation + deg_to_rad(90))))
@@ -130,7 +132,7 @@ func _physics_process(delta: float) -> void:
 
 			
 	else:
-		
+		visible = true
 		floor_time += delta
 		if linear_velocity.length() < (lin_veloc.length() * speed_modifier):
 
@@ -205,7 +207,7 @@ func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:No
 			
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	queue_free()
+	#queue_free()
 	pass # Replace with function body.
 
 

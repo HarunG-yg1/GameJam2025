@@ -72,13 +72,19 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player and wave.gotofloor.is_onfloor:
+	if body is Player and wave.gotofloor.is_onfloor and !body.aim.harpoon:
 		
 		body.on_wave = wave
 		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7:
 			body.velocity += wave.linear_velocity * 0.8
 		else:
 			body.velocity = wave.linear_velocity * 0.8
+	if body is fish and wave.gotofloor.is_onfloor:
+		body.wave = wave
+		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7:
+			body.velocity += wave.linear_velocity * 0.3
+		else:
+			body.velocity = wave.linear_velocity * 0.3
 	if body is TileMapLayer || (body is Wave and body.lin_veloc.angle() != wave.lin_veloc.angle()):
 		hittedArray.append(raycast.get_collision_point())
 
@@ -89,4 +95,6 @@ func _on_body_exited(body: Node2D) -> void:
 	if body is Player:
 
 		body.on_wave = null
+	if body is fish:
+		body.wave = null
 	pass # Replace with function body.
