@@ -79,7 +79,7 @@ func _on_body_entered(body: Node2D) -> void:
 			body.velocity += wave.linear_velocity * 0.8
 		else:
 			body.velocity = wave.linear_velocity * 0.8
-	if body is fish and wave.gotofloor.is_onfloor:
+	if body is fish and wave.gotofloor.is_onfloor and body.weight_priority <= wave.size:
 		body.wave = wave
 		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7:
 			body.velocity += wave.linear_velocity * 0.3
