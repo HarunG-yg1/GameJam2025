@@ -8,6 +8,7 @@ var reflect_n_diffract := false
 var old_lin_veloc : Vector2
 var timer : float
 var speed_modifier := 1.0
+var origin_summon : String
 var floor_time := 0.0
 var dir : Vector2 
 
@@ -50,15 +51,26 @@ func _ready() -> void:
 		i.connect("collide",_on_ray_cast_2d_collide)
 	
 	add_collision_exception_with(%CharacterBody2D)
-	if lin_veloc.length() < 100:
+	if lin_veloc.length() < 50 || size <16:
+		print("yoi")
 		queue_free()
 	#pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
-	
+	if floor_time >15:
+		if origin_summon == "fish":
+			queue_free()
+		else:
+			size -= 16
+			for i in no_contact_list:
+				if "hitted" in i and i !=no_contact_list[-1]:
+					i.hitted =true
+			reflect_n_diffract = true
+			floor_time = 0.5
+			if  lin_veloc.length() < 50 || size <16:
+				queue_free()
 
 		#print(lin_veloc)
 		
@@ -89,7 +101,7 @@ func _process(delta: float) -> void:
 						if no_contact_list[i].spawn:
 							no_contact_list[i].spawn = false
 							var new_wave = original_wave.instantiate().duplicate()
-							
+							new_wave.origin_summon = origin_summon
 							new_wave.global_position =  no_contact_list[i].global_position - lin_veloc.normalized()*16 # - 2.5* Vector2(cos(gotofloor.rotation + deg_to_rad(90)),sin(gotofloor.rotation + deg_to_rad(90))) 
 							new_wave.rotation = rotation#(-lin_veloc).angle()
 							new_wave.size = new_size
@@ -175,7 +187,7 @@ func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:No
 			var new_wave = original_wave.instantiate().duplicate()
 			new_wave.rotation = rotation
 			new_wave.global_position =  theColided.global_position 
-			
+			new_wave.origin_summon = origin_summon
 			new_wave.size = size + theColided.size
 			new_wave.lin_veloc = (lin_veloc + theColided.lin_veloc)/2
 			

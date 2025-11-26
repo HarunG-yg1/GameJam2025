@@ -72,15 +72,18 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player and wave.gotofloor.is_onfloor and !body.aim.harpoon:
+	if body is Player and wave.gotofloor.is_onfloor and body.statemachine.state is not harpooning:
 		
 		body.on_wave = wave
-		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7:
-			body.velocity += wave.linear_velocity * 0.8
+		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7 and (body.velocity + wave.linear_velocity * 0.9).length() > body.MAX_SPEED * 0.9:
+			body.velocity += wave.linear_velocity * 0.9
+		elif (wave.linear_velocity * 0.8).length() > body.MAX_SPEED * 0.9:
+			body.velocity = wave.linear_velocity * 0.9
+	if body is fish and wave.gotofloor.is_onfloor and body.weight_priority <= wave.size :
+		if wave.origin_summon != "fish":
+			body.wave = wave 
 		else:
-			body.velocity = wave.linear_velocity * 0.8
-	if body is fish and wave.gotofloor.is_onfloor and body.weight_priority <= wave.size:
-		body.wave = wave
+			body.velocity += wave.size * 10 * (-body.grav_dir)
 		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.7:
 			body.velocity += wave.linear_velocity * 0.3
 		else:

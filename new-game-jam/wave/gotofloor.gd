@@ -63,7 +63,7 @@ func _on_ray_cast_2d_collide(raycast:RayCast2D,new_dir:Vector2,theColided:Node2D
 			var new_wave = wave.original_wave.instantiate().duplicate()
 			new_wave.rotation = (wave.rotation)
 			new_wave.global_position = theColided.global_position# - wave.lin_veloc.normalized()*16 
-			
+			new_wave.origin_summon = wave.origin_summon
 			new_wave.size = wave.size + theColided.size
 			new_wave.lin_veloc = (wave.lin_veloc + theColided.lin_veloc)/2
 			theColided.queue_free()

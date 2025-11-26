@@ -1,17 +1,8 @@
-[gd_scene load_steps=16 format=4 uid="uid://dhwa718nedm0l"]
+[gd_scene load_steps=6 format=4 uid="uid://dhwa718nedm0l"]
 
 [ext_resource type="PackedScene" uid="uid://cdf25khs3ilq0" path="res://player/player.tscn" id="1_ykeeq"]
 [ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="2_yx7mw"]
-[ext_resource type="PackedScene" uid="uid://bd21xxo0us2f3" path="res://fish/fish.tscn" id="3_ykeeq"]
-[ext_resource type="Script" uid="uid://bgtrlrgdpxb4y" path="res://fish/fish_resource/fish_resource.gd" id="4_02kkc"]
-[ext_resource type="Script" uid="uid://77xfi07yeap0" path="res://fish/states/idle_e.gd" id="5_aomqu"]
-[ext_resource type="Script" uid="uid://b12r17awgivnn" path="res://fish/states/moving_e.gd" id="6_krmtw"]
-[ext_resource type="Script" uid="uid://brrbugdvpdbkr" path="res://fish/states/jumpin_e.gd" id="7_jgkyn"]
-[ext_resource type="Script" uid="uid://bjid8i23ndm78" path="res://fish/states/falling_e.gd" id="8_qpaub"]
-[ext_resource type="Script" uid="uid://b345g5eofd2c7" path="res://fish/states/chase_e.gd" id="9_an1vu"]
-[ext_resource type="Script" uid="uid://cxsh0fcrbq76k" path="res://fish/states/attack_e3.gd" id="10_02kkc"]
-[ext_resource type="Script" uid="uid://cxcmbpoviv8tr" path="res://fish/states/attack_e.gd" id="10_borgi"]
-[ext_resource type="Script" uid="uid://cmtrtmuudhd8q" path="res://fish/states/on_wave_e.gd" id="11_ih6an"]
+[ext_resource type="PackedScene" uid="uid://bd21xxo0us2f3" path="res://fish.tscn" id="3_ykeeq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ykeeq"]
 texture = ExtResource("2_yx7mw")
@@ -94,19 +85,6 @@ physics_layer_0/collision_layer = 15
 physics_layer_0/collision_mask = 15
 sources/0 = SubResource("TileSetAtlasSource_ykeeq")
 
-[sub_resource type="Resource" id="Resource_umrn2"]
-script = ExtResource("4_02kkc")
-fish_type = "whale"
-states = [ExtResource("5_aomqu"), ExtResource("6_krmtw"), ExtResource("7_jgkyn"), ExtResource("8_qpaub"), ExtResource("9_an1vu"), ExtResource("10_02kkc"), ExtResource("11_ih6an"), ExtResource("10_borgi")]
-MAX_SPEED = 100.0
-JUMP_VELOCITY = 800
-max_wave_invulnerability_time = 4.0
-scale = Vector2(3, 3)
-dir_int = -1
-chase_stamina = 10.0
-weight_priority = 160
-metadata/_custom_type_script = "uid://bgtrlrgdpxb4y"
-
 [node name="Node2D" type="Node"]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -124,5 +102,6 @@ floor_max_angle = 0.872665
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 
 [node name="fish" parent="." instance=ExtResource("3_ykeeq")]
-position = Vector2(223, 880)
-fish_settings = SubResource("Resource_umrn2")
+position = Vector2(228, 772)
+floor_max_angle = 0.872665
+classname = "fish"

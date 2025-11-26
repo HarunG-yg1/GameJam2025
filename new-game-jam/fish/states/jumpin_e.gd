@@ -1,0 +1,32 @@
+class_name jumpin_enemy extends enemy_state_class
+
+var name = "jumpin"
+func Enter():
+		enemy.jumping = true
+
+		enemy.on_air_time = 0.1
+		enemy.velocity *= abs(Vector2(enemy.grav_dir.y,enemy.grav_dir.x))
+		enemy.velocity += enemy.JUMP_VELOCITY * (-enemy.grav_dir)
+		
+		pass
+func Process(_delta):
+
+		if !enemy.is_on_floor() and enemy.on_air_time > 0.2:
+			enemy.velocity += enemy.get_gravity()* _delta
+		elif enemy.is_on_floor():
+			#enemy.dir_int *= -1
+			return moving_enemy
+		
+		enemy.move(enemy.direction ,1)
+		
+		if  enemy.on_air_time >0.2  and (enemy.velocity.normalized() - enemy.grav_dir).length() < 1 ||  (enemy.velocity * abs(enemy.grav_dir)).length() <= 10:
+			enemy.jumping =  false
+			if  enemy.get_last_slide_collision() != null and enemy.get_last_slide_collision().get_normal() != enemy.get_floor_normal() and (enemy.get_last_slide_collision().get_normal() + enemy.velocity.normalized()).length() < 1:
+				enemy.dir_int *= -1
+			return falling_enemy
+		if enemy.wave != null and enemy.wave_invulnerability_time <= 0:
+			return on_wave_enemy
+
+func Exit():
+		
+		pass

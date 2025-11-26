@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bd21xxo0us2f3"]
+[gd_scene load_steps=7 format=3 uid="uid://bd21xxo0us2f3"]
 
-[ext_resource type="Script" uid="uid://brvsdscdf6a10" path="res://fish.gd" id="1_hgn23"]
-[ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="2_6ik3a"]
-[ext_resource type="Script" uid="uid://cmt6b3q8lf7ct" path="res://enemystatemachine.gd" id="3_6ik3a"]
+[ext_resource type="Script" uid="uid://brvsdscdf6a10" path="res://fish/fish.gd" id="1_56uai"]
+[ext_resource type="Script" uid="uid://cmt6b3q8lf7ct" path="res://fish/enemystatemachine.gd" id="2_irjxy"]
+[ext_resource type="Resource" uid="uid://c2stq37w3pcax" path="res://fish/fish_resource/normal_fish.tres" id="2_syiqg"]
+[ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="10_47skt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oovoc"]
 
@@ -12,19 +13,20 @@ size = Vector2(160, 321)
 [node name="fish" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 4
-script = ExtResource("1_hgn23")
-weight_priority = 16
+floor_max_angle = 0.872665
+script = ExtResource("1_56uai")
+fish_settings = ExtResource("2_syiqg")
+
+[node name="statemachine" type="Node" parent="."]
+script = ExtResource("2_irjxy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 32)
 scale = Vector2(0.16, 0.16)
-texture = ExtResource("2_6ik3a")
+texture = ExtResource("10_47skt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_oovoc")
-
-[node name="statemachine" type="Node" parent="."]
-script = ExtResource("3_6ik3a")
 
 [node name="Label" type="Label" parent="."]
 offset_top = -33.0

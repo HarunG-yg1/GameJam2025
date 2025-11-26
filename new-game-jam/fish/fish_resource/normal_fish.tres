@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Fish_settings" load_steps=9 format=3 uid="uid://c2stq37w3pcax"]
+
+[ext_resource type="Script" uid="uid://bgtrlrgdpxb4y" path="res://fish/fish_resource/fish_resource.gd" id="1_s0ioj"]
+[ext_resource type="Script" uid="uid://77xfi07yeap0" path="res://fish/states/idle_e.gd" id="2_6y4ug"]
+[ext_resource type="Script" uid="uid://b12r17awgivnn" path="res://fish/states/moving_e.gd" id="3_j27jh"]
+[ext_resource type="Script" uid="uid://brrbugdvpdbkr" path="res://fish/states/jumpin_e.gd" id="4_2080g"]
+[ext_resource type="Script" uid="uid://bjid8i23ndm78" path="res://fish/states/falling_e.gd" id="5_4lqmp"]
+[ext_resource type="Script" uid="uid://b345g5eofd2c7" path="res://fish/states/chase_e.gd" id="6_c5xht"]
+[ext_resource type="Script" uid="uid://cxcmbpoviv8tr" path="res://fish/states/attack_e.gd" id="7_44x2a"]
+[ext_resource type="Script" uid="uid://cmtrtmuudhd8q" path="res://fish/states/on_wave_e.gd" id="8_inm7g"]
+
+[resource]
+script = ExtResource("1_s0ioj")
+fish_type = "normal_fish"
+states = [ExtResource("2_6y4ug"), ExtResource("3_j27jh"), ExtResource("4_2080g"), ExtResource("5_4lqmp"), ExtResource("6_c5xht"), ExtResource("7_44x2a"), ExtResource("8_inm7g")]
+MAX_SPEED = 300.0
+JUMP_VELOCITY = 400
+max_wave_invulnerability_time = 4.0
+dir_int = -1
+chase_stamina = 4.0
+weight_priority = 16
+metadata/_custom_type_script = "uid://bgtrlrgdpxb4y"
