@@ -2,7 +2,7 @@ class_name chase_enemy extends enemy_state_class
 var name = "chase"
 static var prev_grav : Vector2
 func Enter():
-		if enemy.statemachine.old_state is not attack_enemy:
+		if enemy.statemachine.old_state is not falling_enemy and enemy.statemachine.old_state is not attack_enemy:
 			prev_grav = Vector2.ZERO
 		if ((enemy.player.global_position-enemy.global_position).normalized() + enemy.direction).length() <1.44:
 			enemy.dir_int *= -1
@@ -20,10 +20,10 @@ func Process(_delta):
 				if prev_grav == Vector2.ZERO:
 
 					prev_grav = enemy.grav_dir
-				print("up rn")
-				print(enemy.fish_type)
-				print(enemy.grav_dir)
-				print(prev_grav)
+				#print("up rn")
+			#	print(enemy.fish_type)
+			#	print(enemy.grav_dir)
+			#	print(prev_grav)
 				enemy.up_direction = enemy.get_last_slide_collision().get_normal()
 	
 				enemy.grav_dir = -enemy.get_last_slide_collision().get_normal()
@@ -58,6 +58,6 @@ func Exit():
 			enemy.up_direction = -prev_grav
 			enemy.velocity *= 0
 		#	prev_grav = Vector2.ZERO
-			print("fallin rn")
-			print(enemy.fish_type)
-			print(enemy.grav_dir)
+		#	print("fallin rn")
+		#	print(enemy.fish_type)
+		#	print(enemy.grav_dir)

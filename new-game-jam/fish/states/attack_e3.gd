@@ -18,6 +18,8 @@ func Process(_delta):
 			enemy.move(((enemy.player.global_position-enemy.sprite.global_position)* abs(Vector2(enemy.grav_dir.y,enemy.grav_dir.x))).normalized(),2)
 		enemy.velocity += enemy.get_gravity().length() * _delta * enemy.grav_dir
 		if (enemy.on_air_time >0.2  and (enemy.velocity.normalized() - enemy.grav_dir).length() < 1 ||  (enemy.velocity * abs(enemy.grav_dir)).length() <= 10):
+			if !enemy.hitting:
+				enemy.animated_sprite.play("flash_red")
 			enemy.hitting = true
 			
 			#enemy.move((enemy.player.global_position-(enemy.global_position+(enemy.grav_dir)*32)).normalized(),((enemy.player.global_position-enemy.global_position).length())/8)

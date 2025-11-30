@@ -3,7 +3,7 @@ class_name hp_n_stuff
 extends Node
 @export var hp_owner : Node
 @export var hp : float=  20
-@onready var hp_bar = $"../ProgressBar"
+@onready var hp_bar = %ProgressBar
 var damaged_timer : float
 var heal_timer : float
 var drown_time : float = 0.8

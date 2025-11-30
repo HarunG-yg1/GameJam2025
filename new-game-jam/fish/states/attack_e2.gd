@@ -3,7 +3,7 @@ class_name attack_enemy2 extends attack_enemy
 static var mark : Vector2
 func Enter():
 		
-			
+		enemy.animated_sprite.play("flash_yellow")
 		damage = 3
 		name = "attack2"
 		attack_time =1
@@ -18,7 +18,10 @@ func Process(_delta):
 		if attack_time > 0.2:
 			mark = enemy.player.global_position + enemy.player.velocity.normalized() * 16
 		if (enemy.player.global_position-enemy.global_position).length() > 1 and attack_time < .4:
+		#	if !enemy.hitting:
+				
 			enemy.hitting = true
+			
 
 			
 			enemy.move((mark-(enemy.sprite.global_position)).normalized(),((mark-enemy.global_position).length())/20)

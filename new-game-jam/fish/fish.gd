@@ -54,6 +54,7 @@ func _ready() -> void:
 	fish_settings.mass_export(self)
 	statemachine.enemy = self
 	statemachine.init(states)
+	animated_sprite.play("default")
 
 func _process(delta: float) -> void:
 	if sleep_queue and on_air_time == 0 and statemachine.state is not attack_enemy and statemachine.state is not falling_enemy:
