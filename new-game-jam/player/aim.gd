@@ -16,14 +16,14 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	check_cursor_speed_for_smash(delta)
 	aim_to_cursor =  ( get_global_mouse_position()- player.position).normalized()
-	hurt_box.rotation = aim_to_cursor.angle()
+	
 	if release_time < 3:
 		release_time += delta
 		if release_time > 0.15:
 			swing_speed *= 0
 			harpoon = false
 	if Input.is_action_pressed("hit") and release_time >=2.5:
-		swing_speed -= swing_speed * delta/7.5
+		swing_speed -= swing_speed * delta/5
 		
 		if swing_speed.length() < 150:
 			visible = false

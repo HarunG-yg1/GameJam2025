@@ -5,11 +5,13 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
-
+	guy1.find_anim(self)
 	pass
 func Process(_delta):
 		
-
+		if guy1.hp_and_stuff.hp <= 0:
+			print("yuioi")
+			return dead
 		if (guy1.velocity.length()) > 1 and !guy1.jumping:
 			if guy1.on_wave == null:
 				guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/15  

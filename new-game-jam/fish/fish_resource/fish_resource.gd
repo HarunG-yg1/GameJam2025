@@ -9,7 +9,9 @@ class_name Fish_settings extends Resource
 @export var dir_int : int = -1
 @export var chase_stamina : float = 4
 @export var weight_priority : int
-@export var texture : Texture2D
+@export var hp : int
+@export var texture : Texture2D = preload("res://icon.svg")
+@export var sprite_scale  : float = 1
 
 func mass_export(the_fish):
 	the_fish.fish_type = fish_type
@@ -21,4 +23,10 @@ func mass_export(the_fish):
 	the_fish.dir_int = dir_int 
 	the_fish.chase_stamina = chase_stamina
 	the_fish.weight_priority = weight_priority
-	the_fish.sprite2 = texture
+	the_fish.sprite.texture = texture
+	the_fish.sprite.scale.x *= sprite_scale
+	the_fish.sprite.scale.y *= sprite_scale
+	the_fish.hp_and_stuff.hp = hp
+	the_fish.hp_and_stuff.MAX_HP = hp
+	#the_fish.animated_sprite.scale.x *= sprite_scale
+	#the_fish.animated_sprite.scale.y *= sprite_scale

@@ -11,6 +11,8 @@ func Enter():
 			change_attack_chance = randi_range(0,100)
 		pass
 func Process(_delta):
+		if enemy.hp_and_stuff.hp <= 0:
+			return dead_enemy
 		if  (enemy.player.global_position-enemy.sprite.global_position).length() < 8 * enemy.scale.length():
 			if enemy.hitting and enemy.player.finish_run and enemy.player.hp_and_stuff.damaged_timer <= 0 and enemy.was_hit < 0.1:#and (enemy.sprite.position -enemy. player.position).length() < 400:
 				enemy.player.hp_and_stuff.take_damage(damage,1)
@@ -26,7 +28,7 @@ func Process(_delta):
 		attack_time -= _delta 
 
 		if !enemy.is_on_floor() and enemy.on_air_time > 0.2:
-			enemy.velocity += enemy.get_gravity()* _delta
+			enemy.velocity += enemy.get_gravity().length() * _delta * enemy.grav_dir
 		if enemy.get_last_slide_collision() != null and enemy.get_last_slide_collision().get_normal() != enemy.get_floor_normal() and (enemy.get_last_slide_collision().get_normal() + enemy.velocity.normalized()).length() < 1:
 			enemy.dir_int *= -1
 		if attack_time <=0:

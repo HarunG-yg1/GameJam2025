@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Fish_settings" load_steps=12 format=3 uid="uid://chdawmt1fulnf"]
+
+[ext_resource type="Script" uid="uid://bgtrlrgdpxb4y" path="res://fish/fish_resource/fish_resource.gd" id="1_d7a08"]
+[ext_resource type="Script" uid="uid://77xfi07yeap0" path="res://fish/states/idle_e.gd" id="2_ypx76"]
+[ext_resource type="Script" uid="uid://b12r17awgivnn" path="res://fish/states/moving_e.gd" id="3_7h7fu"]
+[ext_resource type="Script" uid="uid://brrbugdvpdbkr" path="res://fish/states/jumpin_e.gd" id="4_iw3bh"]
+[ext_resource type="Script" uid="uid://bjid8i23ndm78" path="res://fish/states/falling_e.gd" id="5_g0qug"]
+[ext_resource type="Script" uid="uid://b345g5eofd2c7" path="res://fish/states/chase_e.gd" id="6_qbroe"]
+[ext_resource type="Script" uid="uid://cxsh0fcrbq76k" path="res://fish/states/attack_e3.gd" id="7_kxrbb"]
+[ext_resource type="Script" uid="uid://cmtrtmuudhd8q" path="res://fish/states/on_wave_e.gd" id="8_vtis0"]
+[ext_resource type="Script" uid="uid://cxcmbpoviv8tr" path="res://fish/states/attack_e.gd" id="9_u1571"]
+[ext_resource type="Script" uid="uid://cajn0t17yv146" path="res://fish/states/dead_e.gd" id="10_ypx76"]
+[ext_resource type="Texture2D" uid="uid://d4m584m1fnwr" path="res://fish/evil_whale.png" id="11_7h7fu"]
+
+[resource]
+script = ExtResource("1_d7a08")
+fish_type = "whale"
+states = [ExtResource("2_ypx76"), ExtResource("3_7h7fu"), ExtResource("4_iw3bh"), ExtResource("5_g0qug"), ExtResource("6_qbroe"), ExtResource("7_kxrbb"), ExtResource("8_vtis0"), ExtResource("9_u1571"), ExtResource("10_ypx76")]
+MAX_SPEED = 100.0
+JUMP_VELOCITY = 600
+max_wave_invulnerability_time = 5.0
+scale = Vector2(3, 3)
+dir_int = -1
+chase_stamina = 5.0
+weight_priority = 160
+hp = 50
+texture = ExtResource("11_7h7fu")
+sprite_scale = 4.0
+metadata/_custom_type_script = "uid://bgtrlrgdpxb4y"

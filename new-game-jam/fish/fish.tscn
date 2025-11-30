@@ -1,17 +1,75 @@
-[gd_scene load_steps=7 format=3 uid="uid://bd21xxo0us2f3"]
+[gd_scene load_steps=16 format=3 uid="uid://bd21xxo0us2f3"]
 
 [ext_resource type="Script" uid="uid://brvsdscdf6a10" path="res://fish/fish.gd" id="1_56uai"]
 [ext_resource type="Script" uid="uid://cmt6b3q8lf7ct" path="res://fish/enemystatemachine.gd" id="2_irjxy"]
 [ext_resource type="Resource" uid="uid://c2stq37w3pcax" path="res://fish/fish_resource/normal_fish.tres" id="2_syiqg"]
-[ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="10_47skt"]
+[ext_resource type="Texture2D" uid="uid://clbpbtnj63fv2" path="res://dead.png" id="5_sgxm1"]
+[ext_resource type="Script" uid="uid://6u3poie7ou7g" path="res://player/hp_and_stuff.gd" id="5_x746t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oovoc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ik3a"]
 size = Vector2(160, 321)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_en3yg"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76qcb"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jeltl"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56uai"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irjxy"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_syiqg"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnjgv"]
+atlas = ExtResource("5_sgxm1")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4pkfy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_en3yg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76qcb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jeltl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_56uai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_irjxy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_syiqg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnjgv")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 12.0
+}]
+
 [node name="fish" type="CharacterBody2D"]
-collision_layer = 4
+collision_layer = 2
 collision_mask = 4
 floor_max_angle = 0.872665
 script = ExtResource("1_56uai")
@@ -23,7 +81,6 @@ script = ExtResource("2_irjxy")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 32)
 scale = Vector2(0.16, 0.16)
-texture = ExtResource("10_47skt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_oovoc")
@@ -45,5 +102,26 @@ shape = SubResource("RectangleShape2D_6ik3a")
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="hp_and_stuff" type="Node" parent="." node_paths=PackedStringArray("hp_owner")]
+script = ExtResource("5_x746t")
+hp_owner = NodePath("..")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -35.0
+offset_top = 13.0
+offset_right = 7.0
+offset_bottom = 18.0
+scale = Vector2(1.6701, 1.34339)
+show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+sprite_frames = SubResource("SpriteFrames_4pkfy")
+animation = &"dead"
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="screen_entered" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

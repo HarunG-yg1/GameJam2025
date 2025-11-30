@@ -51,8 +51,7 @@ func _ready() -> void:
 		i.connect("collide",_on_ray_cast_2d_collide)
 	
 	add_collision_exception_with(%CharacterBody2D)
-	if lin_veloc.length() < 50 || size <16:
-		print("yoi")
+	if lin_veloc.length() <= 20 || size <16:
 		queue_free()
 	#pass # Replace with function body.
 
@@ -60,9 +59,9 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if floor_time >15:
-		if origin_summon == "fish":
-			queue_free()
-		else:
+	#	if origin_summon == "fish":
+		#	queue_free()
+		
 			size -= 16
 			for i in no_contact_list:
 				if "hitted" in i and i !=no_contact_list[-1]:
@@ -101,6 +100,7 @@ func _process(delta: float) -> void:
 						if no_contact_list[i].spawn:
 							no_contact_list[i].spawn = false
 							var new_wave = original_wave.instantiate().duplicate()
+							new_wave.floor_time = floor_time
 							new_wave.origin_summon = origin_summon
 							new_wave.global_position =  no_contact_list[i].global_position - lin_veloc.normalized()*16 # - 2.5* Vector2(cos(gotofloor.rotation + deg_to_rad(90)),sin(gotofloor.rotation + deg_to_rad(90))) 
 							new_wave.rotation = rotation#(-lin_veloc).angle()
@@ -126,8 +126,8 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	#print(linear_velocity)
 	#print("hello")
-	if get_colliding_bodies().size() > 0 and raycast.get_collider() is TileMapLayer:
-		global_position -= (raycast.get_collision_point()-global_position).normalized() * 8
+	if get_colliding_bodies().size() > 0 and get_collisionpoint_with_tilemaplayer_from_all_raycast() != Vector2.ZERO:
+		global_position -= (get_collisionpoint_with_tilemaplayer_from_all_raycast()-global_position).normalized() * 8
 	if get_colliding_bodies().size() > 0 and gotofloor.is_onfloor and contact_list.size() == 0  and !(raycast.get_collider() is TileMapLayer):
 		
 			
@@ -217,7 +217,14 @@ func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:No
 			set_collision_mask_value(1,true)
 			contact_list.clear()
 			
-
+func get_collisionpoint_with_tilemaplayer_from_all_raycast()-> Vector2:
+	
+	for i in no_contact_list:
+		if "hitted" in i and i.get_collider() is TileMapLayer:
+			
+			return i.get_collision_point()
+		
+	return Vector2.ZERO
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	#queue_free()
 	pass # Replace with function body.

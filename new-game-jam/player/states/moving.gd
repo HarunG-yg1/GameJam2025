@@ -5,10 +5,12 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.find_anim(self)
 		pass
 func Process(_delta):
 
-
+		if guy1.hp_and_stuff.hp <= 0:
+			return dead
 		guy1.move(guy1.direction,1)
 		if guy1.direction.length() == 0.0:
 			return idle

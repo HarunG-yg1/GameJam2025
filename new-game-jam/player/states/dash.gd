@@ -7,6 +7,7 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.find_anim(self)
 		dash_window = 0.25
 		boost = 5
 		pass

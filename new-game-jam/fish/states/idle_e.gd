@@ -5,6 +5,8 @@ func Enter():
 		idle_timer = [1.5,2,0.5][randi_range(0,2)]
 		pass
 func Process(_delta):
+		if enemy.hp_and_stuff.hp <= 0:
+			return dead_enemy
 		idle_timer -= _delta
 		if (enemy.velocity.length()) > 1:
 			enemy.velocity.x -= enemy.velocity.x/15  

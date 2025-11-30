@@ -8,18 +8,21 @@ func Enter():
 		enemy.on_air_time = 0.1
 		enemy.velocity *= 0 #dabs(Vector2(enemy.grav_dir.y,enemy.grav_dir.x))
 	#	jumping = enemy.wave.size * 10 * (-enemy.grav_dir)
-		enemy.velocity += enemy.wave.size * 10 * (-enemy.grav_dir)
+	
+		enemy.velocity += (enemy.wave.size*16/(enemy.weight_priority)) * 3 * (-enemy.grav_dir)
 		
 		pass
 func Process(_delta):
+		if enemy.hp_and_stuff.hp <= 0:
+			return dead_enemy
 		stun_time -= _delta
 		
 		if stun_time < 0:
 			return falling_enemy
 		if !enemy.is_on_floor() and enemy.on_air_time > 0.2:
-			enemy.velocity += enemy.get_gravity()* _delta
+			enemy.velocity += enemy.get_gravity().length() * _delta * enemy.grav_dir
 		elif enemy.wave != null and enemy.on_air_time == 0:
-			enemy.velocity += enemy.wave.size * (-enemy.grav_dir)
+			enemy.velocity +=  (enemy.wave.size*16/(enemy.weight_priority)) * 3 * (-enemy.grav_dir)
 
 func Exit():
 		enemy.wave_invulnerability_time = enemy.max_wave_invulnerability_time 

@@ -1,13 +1,16 @@
 class_name falling_enemy extends enemy_state_class
-var name = "falling"
+var name = "fallingE"
 func Enter():
 		enemy.faling = true
+
 		pass
 
 func Process(_delta):
+		if enemy.hp_and_stuff.hp <= 0:
+			return dead_enemy
 		#if !guy1.is_on_floor():
 			#guy1.saved_velocity = guy1.velocity/3
-		enemy.velocity += enemy.get_gravity() * _delta
+		enemy.velocity += enemy.get_gravity().length() * _delta * enemy.grav_dir
 		enemy.move(enemy.direction,1)
 
 		if enemy.is_on_floor():
