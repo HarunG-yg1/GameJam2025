@@ -9,6 +9,8 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/SWORD SLASH SOUND EFFECT ｜ NO COPYRIGHT.mp3",0.67,randf_range(0.5,2),0.1)
+		Playsound.get_playsound("res://sfx/Sound Effect Whoosh Sound (No Copyright).mp3",guy1.position,1.12,randf_range(0.5,2),1)
 		guy1.find_anim(self)
 		harpoon_time = 0.6
 	#	guy1.hit_at_target()

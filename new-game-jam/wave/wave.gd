@@ -9,8 +9,11 @@ var old_lin_veloc : Vector2
 var timer : float
 var speed_modifier := 1.0
 var origin_summon : String
+var roll_back_time : float
+var prev_pos : Vector2
 var floor_time := 0.0
 var dir : Vector2 
+var lag_count : int = 100
 
 @export var lin_veloc : Vector2
 @export var size : float = 16
@@ -22,6 +25,7 @@ var dir : Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	prev_pos = position
 	timer = 10/lin_veloc.length()
 	$Label.text = name
 	collision.shape = collision.shape.duplicate(true)
@@ -58,7 +62,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if floor_time >15:
+	roll_back_time += delta
+
+	if floor_time >10:
 	#	if origin_summon == "fish":
 		#	queue_free()
 		
@@ -125,9 +131,17 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	#print(linear_velocity)
-	#print("hello")
+	if lag_count < 0:
+		queue_free()
 	if get_colliding_bodies().size() > 0 and get_collisionpoint_with_tilemaplayer_from_all_raycast() != Vector2.ZERO:
-		global_position -= (get_collisionpoint_with_tilemaplayer_from_all_raycast()-global_position).normalized() * 8
+		linear_velocity *= 0
+		lag_count -= 1
+		position = prev_pos 
+		
+	else:
+		if roll_back_time > 0.25:
+			roll_back_time = 0
+			prev_pos = position
 	if get_colliding_bodies().size() > 0 and gotofloor.is_onfloor and contact_list.size() == 0  and !(raycast.get_collider() is TileMapLayer):
 		
 			
@@ -137,7 +151,7 @@ func _physics_process(delta: float) -> void:
 		
 	if !gotofloor.is_onfloor:
 		visible = false
-		if linear_velocity.length() < 600:
+		if linear_velocity.length() < 600 and !(get_colliding_bodies().size() > 0 and get_collisionpoint_with_tilemaplayer_from_all_raycast() != Vector2.ZERO):
 			
 			apply_impulse(-150*Vector2(cos(gotofloor.global_rotation + deg_to_rad(90)),sin(gotofloor.global_rotation + deg_to_rad(90))))
 		#constant_force=(4000* Vector2(cos(gotofloor.rotation + deg_to_rad(90)),sin(gotofloor.rotation + deg_to_rad(90))))
@@ -146,9 +160,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		visible = true
 		floor_time += delta
-		if linear_velocity.length() < (lin_veloc.length() * speed_modifier):
+		if linear_velocity.length() < (lin_veloc.length() * speed_modifier) and  !(get_colliding_bodies().size() > 0 and get_collisionpoint_with_tilemaplayer_from_all_raycast() != Vector2.ZERO):
 
-			apply_impulse(lin_veloc * speed_modifier)
+			apply_impulse((lin_veloc * speed_modifier)/5)
 			#print(lin_veloc * speed_modifier)
 		#linear_velocity = lin_veloc
 
@@ -181,7 +195,7 @@ func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:No
 
 	elif (theColided is Wave):
 
-		if theColided.lin_veloc.angle() == lin_veloc.angle() and spawn:
+		if (theColided.lin_veloc.normalized() - lin_veloc.normalized()).length()<0.2 and spawn:
 			spawn = false
 			theColided.spawn = false
 			var new_wave = original_wave.instantiate().duplicate()
@@ -201,7 +215,7 @@ func _on_ray_cast_2d_collide(the_raycast:RayCast2D,new_dir:Vector2,theColided:No
 			set_collision_mask_value(1,false)
 			set_collision_layer_value(1,false)
 			if theColided.size < size:
-				theColided.lin_veloc += lin_veloc/5
+				theColided.lin_veloc += lin_veloc/2
 				#if theColided.lin_veloc.length() < lin_veloc.length()/2 and theColided.lin_veloc.normalized() != lin_veloc.normalized():
 				#	theColided.lin_veloc = -new_dir*lin_veloc.length()/2
 			#print(40/(theColided.lin_veloc.length()+lin_veloc.length()))
@@ -226,9 +240,8 @@ func get_collisionpoint_with_tilemaplayer_from_all_raycast()-> Vector2:
 		
 	return Vector2.ZERO
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	#queue_free()
+	floor_time += 5
 	pass # Replace with function body.
 
 
-	
 	

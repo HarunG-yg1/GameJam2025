@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dshf30nwwbspj"
+path="res://.godot/imported/some cruelty squad sfx2.mp3-88f99bc88b5977935f6bab532fbd3d73.mp3str"
+
+[deps]
+
+source_file="res://sfx/some cruelty squad sfx2.mp3"
+dest_files=["res://.godot/imported/some cruelty squad sfx2.mp3-88f99bc88b5977935f6bab532fbd3d73.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

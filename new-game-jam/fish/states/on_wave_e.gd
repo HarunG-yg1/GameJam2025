@@ -9,7 +9,7 @@ func Enter():
 		enemy.velocity *= 0 #dabs(Vector2(enemy.grav_dir.y,enemy.grav_dir.x))
 	#	jumping = enemy.wave.size * 10 * (-enemy.grav_dir)
 	
-		enemy.velocity += (enemy.wave.size*16/(enemy.weight_priority)) * 3 * (-enemy.grav_dir)
+		enemy.velocity += (enemy.wave.size*16/(enemy.weight_priority)) * 2 * (-enemy.grav_dir)
 		
 		pass
 func Process(_delta):

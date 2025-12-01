@@ -6,9 +6,12 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+	guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/some cruelty squad sfx.mp3",0.4,1,0.6)
+	Playsound.get_playsound("res://sfx/explosion.mp3",guy1.position,0,1)
 	guy1.find_anim(self)
 	guy1.collision.disabled = true
 	guy1.set_process(true)
+	Finish.restart()
 	pass
 func Process(_delta):
 		

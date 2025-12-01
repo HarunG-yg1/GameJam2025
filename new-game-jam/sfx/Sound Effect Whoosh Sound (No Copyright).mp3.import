@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d2rvwrqvowpct"
+path="res://.godot/imported/Sound Effect Whoosh Sound (No Copyright).mp3-b2521a0bae1f7eef2fd0844c590f8cd4.mp3str"
+
+[deps]
+
+source_file="res://sfx/Sound Effect Whoosh Sound (No Copyright).mp3"
+dest_files=["res://.godot/imported/Sound Effect Whoosh Sound (No Copyright).mp3-b2521a0bae1f7eef2fd0844c590f8cd4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

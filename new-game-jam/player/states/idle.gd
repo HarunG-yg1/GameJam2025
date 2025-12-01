@@ -13,10 +13,10 @@ func Process(_delta):
 			print("yuioi")
 			return dead
 		if (guy1.velocity.length()) > 1 and !guy1.jumping:
-			if guy1.on_wave == null:
-				guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/15  
-			else:
-				guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/75 
+			#if guy1.on_wave == null:
+			guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/75 
+			#else:
+			#	guy1.velocity -= (guy1.velocity * abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x)))/75 
 			if abs(guy1.velocity.x) < 1:
 				guy1.velocity.x = 0
 		if guy1.direction.length() > 0.0:

@@ -11,6 +11,7 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/SWORD SLASH SOUND EFFECT ｜ NO COPYRIGHT.mp3",0.67,randf_range(0.5,2),0.1)
 		guy1.find_anim(self)
 		guy1.hit_at_target()
 		

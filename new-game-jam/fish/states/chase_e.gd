@@ -2,6 +2,7 @@ class_name chase_enemy extends enemy_state_class
 var name = "chase"
 static var prev_grav : Vector2
 func Enter():
+		enemy.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Wii Sports - Groan Sound Effect.mp3",0.5,4*enemy.fish_settings.pitch,0.7)
 		if enemy.statemachine.old_state is not falling_enemy and enemy.statemachine.old_state is not attack_enemy:
 			prev_grav = Vector2.ZERO
 		if ((enemy.player.global_position-enemy.global_position).normalized() + enemy.direction).length() <1.44:
@@ -13,7 +14,7 @@ func Process(_delta):
 			return dead_enemy
 		enemy.chase_stamina -= _delta *2
 		if  enemy.get_last_slide_collision() != null and (enemy.get_last_slide_collision().get_normal() - enemy.velocity.normalized()).length() > 1.5 and enemy.on_air_time == 0:
-			if abs((enemy.player.global_position-enemy.global_position).normalized().y) + 0.3  <= abs((enemy.player.global_position-enemy.global_position).normalized().x) || enemy.weight_priority > 32:
+			if abs((enemy.player.global_position-enemy.global_position).normalized().y) + 0.4  <= abs((enemy.player.global_position-enemy.global_position).normalized().x) || enemy.weight_priority > 32:
 					
 				return jumpin_enemy
 			else:

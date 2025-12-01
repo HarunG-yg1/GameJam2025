@@ -7,8 +7,10 @@ var release_time : float = 3
 var aim_to_cursor : Vector2
 @onready var hurt_box = $"../Area2D"
 @onready var player = $".."
+@onready var harpoon_bar = $"../CanvasGroup/Harpoon_Bar"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	harpoon_bar.value = 100
 	pass # Replace with function body.
 
 
@@ -18,6 +20,7 @@ func _process(delta: float) -> void:
 	aim_to_cursor =  ( get_global_mouse_position()- player.position).normalized()
 	
 	if release_time < 3:
+		harpoon_bar.value = (release_time/3) * 100
 		release_time += delta
 		if release_time > 0.15:
 			swing_speed *= 0
@@ -36,7 +39,7 @@ func _process(delta: float) -> void:
 		visible = false
 		harpoon = true
 		release_time = 0
-	
+		harpoon_bar.value = 0
 	pass
 
 

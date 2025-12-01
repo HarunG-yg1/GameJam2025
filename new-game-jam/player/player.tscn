@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://q7iwpbngebq2" path="res://player/player.gd" id="1_onrkg"]
 [ext_resource type="Script" uid="uid://8b8bs1gk1xix" path="res://player/statemachine.gd" id="2_g1dw6"]
-[ext_resource type="Texture2D" uid="uid://ctek2kcvovdyc" path="res://icon.svg" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://coajhxofcyuq" path="res://player/states/idle.gd" id="3_ebec5"]
 [ext_resource type="Script" uid="uid://c1gl0hilvwf21" path="res://player/states/moving.gd" id="4_yllr7"]
 [ext_resource type="Script" uid="uid://cs3kbbcyv3vnr" path="res://player/aim.gd" id="4_yw30f"]
@@ -17,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://cihbxi4o6san0" path="res://player/fisherman.png" id="13_32hag"]
 [ext_resource type="Script" uid="uid://6u3poie7ou7g" path="res://player/hp_and_stuff.gd" id="13_yllr7"]
 [ext_resource type="Texture2D" uid="uid://clbpbtnj63fv2" path="res://dead.png" id="14_tqiix"]
+[ext_resource type="Texture2D" uid="uid://bj4m335j30fgf" path="res://harpoon_aim.png" id="16_tqiix"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_32hag"]
 
@@ -562,6 +562,7 @@ animations = [{
 size = Vector2(77, 64)
 
 [node name="Player" type="CharacterBody2D"]
+texture_filter = 1
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("1_onrkg")
@@ -581,12 +582,6 @@ position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_s3g0c")
 animation = &"dead"
 
-[node name="Label" type="Label" parent="."]
-visible = false
-offset_top = -33.0
-offset_right = 40.0
-offset_bottom = -10.0
-
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
@@ -595,26 +590,75 @@ collision_mask = 2
 position = Vector2(13.5, 0)
 shape = SubResource("RectangleShape2D_yw30f")
 
-[node name="hp_and_stuff" type="Node" parent="." node_paths=PackedStringArray("hp_owner")]
+[node name="hp_and_stuff" type="Node2D" parent="." node_paths=PackedStringArray("hp_owner")]
 script = ExtResource("13_yllr7")
 hp_owner = NodePath("..")
 
-[node name="aim" type="Sprite2D" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0.588235)
-scale = Vector2(0.890625, 0.03125)
-texture = ExtResource("2_i3pqv")
-script = ExtResource("4_yw30f")
+[node name="Label" type="Label" parent="hp_and_stuff"]
+offset_left = -266.0
+offset_top = 191.0
+offset_right = -185.0
+offset_bottom = 267.0
+text = "       HP
+HARPOON
+    WAVE"
+
+[node name="CoolLabel" type="Label" parent="hp_and_stuff"]
+offset_left = -561.0
+offset_top = -211.0
+offset_right = -521.0
+offset_bottom = -188.0
+
+[node name="fish_label" type="Label" parent="hp_and_stuff"]
+offset_left = -555.0
+offset_top = 42.0
+offset_right = -515.0
+offset_bottom = 65.0
 
 [node name="CanvasGroup" type="CanvasGroup" parent="."]
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasGroup"]
+[node name="HP_bar" type="ProgressBar" parent="CanvasGroup"]
 unique_name_in_owner = true
+modulate = Color(6.73831e-07, 0.905603, 0.391424, 1)
 offset_left = -179.0
 offset_top = 182.0
 offset_right = 179.0
 offset_bottom = 209.0
+
+[node name="Harpoon_Bar" type="ProgressBar" parent="CanvasGroup"]
+modulate = Color(1, 0.65098, 0.160784, 1)
+offset_left = -179.0
+offset_top = 212.0
+offset_right = 178.0
+offset_bottom = 239.0
 show_percentage = false
+
+[node name="Wave_Bar" type="ProgressBar" parent="CanvasGroup"]
+modulate = Color(0.0941176, 0.431373, 1, 1)
+offset_left = -178.0
+offset_top = 245.0
+offset_right = 177.0
+offset_bottom = 272.0
+show_percentage = false
+
+[node name="Cool_Meter" type="ProgressBar" parent="CanvasGroup"]
+modulate = Color(1, 1, 0.45098, 1)
+offset_left = -559.0
+offset_top = -1.0
+offset_right = -383.0
+offset_bottom = 26.0
+rotation = -1.57354
+show_percentage = false
+
+[node name="aim" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.588235)
+texture_filter = 1
+texture = ExtResource("16_tqiix")
+script = ExtResource("4_yw30f")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

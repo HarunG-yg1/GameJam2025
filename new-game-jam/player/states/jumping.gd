@@ -5,6 +5,7 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Old ROBLOX Splat⧸Tripping Sound.mp3",0.4)
 		guy1.find_anim(self)
 		guy1.on_air_time = 0.1
 		#guy1.velocity *= abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x))

@@ -7,6 +7,7 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Sound Effect Whoosh Sound (No Copyright).mp3",1.12,randf_range(0.5,2),0.2)
 		guy1.find_anim(self)
 		dash_window = 0.25
 		boost = 5
@@ -16,7 +17,7 @@ func Process(delta):
 		if dash_window > 0:
 			guy1.move( (guy1.direction),boost)
 			
-			boost -= delta * 8
+			boost -= delta * 6
 			dash_window -= delta
 		else:
 			guy1.jumping = false

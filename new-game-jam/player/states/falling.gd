@@ -7,6 +7,7 @@ func get_GuynStatemachine(guy,statemachine):
 	state_machine = statemachine
 func Enter():
 		guy1.find_anim(self)
+		
 		time_spent_inState = 0
 		guy1.faling = true
 		guy1.jumping = false
@@ -23,14 +24,16 @@ func Process(_delta):
 		if guy1.run and !guy1.finish_run:
 			return dash
 		if guy1.is_on_floor():
-			
+			guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Lancer Splat Sound Effect (Deltarune).mp3",0.45,1,0.2)
 			return moving
 		if guy1.hitting and guy1.hit_timer <= 0.01 and guy1.on_wave == null:
 			return hit
 		if guy1.on_wave!= null:
 			if state_machine.old_state is style:
-				print("YOOOOOOOOOOOO HOLY SHIT")
-				guy1.hp_and_stuff.fishes += 3
+				guy1.hp_and_stuff.multiplier +=1
+			#	guy1.hp_and_stuff.multiplier_bar.value = 100.0
+			#	print("YOOOOOOOOOOOO HOLY SHIT")
+				
 			return ride_wave
 		if guy1.aim.harpoon:
 			return harpooning

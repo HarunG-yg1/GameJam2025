@@ -17,7 +17,7 @@ func init() -> void:
 func _process(delta: float) -> void:
 	if state is not GDScript:
 		inState_time += delta
-		$"../Label".text = str(state.name)
+		#$"../Label".text = str(state.name)
 	state_enterer(state)
 	if state != null:
 		

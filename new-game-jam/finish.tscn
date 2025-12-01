@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://4go22vwbb5ll"]
+
+[ext_resource type="Script" uid="uid://cko1cpqqmkmcg" path="res://fininshed_list.gd" id="1_sy5k4"]
+
+[node name="finish" type="Node"]
+script = ExtResource("1_sy5k4")

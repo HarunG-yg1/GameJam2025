@@ -16,14 +16,15 @@
 script = ExtResource("1_wu2tm")
 fish_type = "sword_fish"
 states = [ExtResource("2_txumb"), ExtResource("3_usvww"), ExtResource("4_rld44"), ExtResource("5_fajxx"), ExtResource("6_mcros"), ExtResource("7_xphkv"), ExtResource("8_81mi3"), ExtResource("9_iflts"), ExtResource("10_usvww")]
-MAX_SPEED = 300.0
+MAX_SPEED = 350.0
 JUMP_VELOCITY = 400
 max_wave_invulnerability_time = 4.0
 scale = Vector2(1, 1)
 dir_int = -1
 chase_stamina = 10.0
 weight_priority = 16
-hp = 20
+hp = 30
 texture = ExtResource("11_rld44")
 sprite_scale = 4.0
+pitch = 2.0
 metadata/_custom_type_script = "uid://bgtrlrgdpxb4y"

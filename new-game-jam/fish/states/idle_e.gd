@@ -2,6 +2,7 @@ class_name  idle_enemy extends enemy_state_class
 var name = "idle"
 static var idle_timer : float = 1
 func Enter():
+		enemy.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Wii Sports - Groan Sound Effect.mp3",0.85,0.5*enemy.fish_settings.pitch,0.7)
 		idle_timer = [1.5,2,0.5][randi_range(0,2)]
 		pass
 func Process(_delta):

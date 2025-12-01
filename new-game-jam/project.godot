@@ -11,12 +11,14 @@ config_version=5
 [application]
 
 config/name="New Game Jam"
+run/main_scene="uid://bsxc7dshw5cw4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Playsound="*res://playsound.tscn"
+Finish="*res://finish.tscn"
 
 [input]
 

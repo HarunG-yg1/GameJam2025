@@ -75,18 +75,18 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is Player and wave.gotofloor.is_onfloor and body.statemachine.state is not harpooning:
 		
 		body.on_wave = wave
-		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 1.44 and (body.velocity + wave.linear_velocity * 0.8).length() > body.MAX_SPEED * 0.8:
-			body.velocity += wave.linear_velocity * 0.8 + (wave.size)/2 * (-body.grav_dir)
+		if (body.velocity.normalized()- wave.linear_velocity.normalized()).length() < 1.414 and (body.velocity + wave.linear_velocity * 0.8).length() > body.MAX_SPEED * 0.8:
+			body.velocity = wave.linear_velocity * 0.8 + (wave.size)/2 * (-body.grav_dir)
 		elif (wave.linear_velocity * 0.8).length() > body.MAX_SPEED * 0.8:
 			
-			body.velocity = wave.linear_velocity * 0.8 + (wave.size)/2 * (-body.grav_dir)
+			body.velocity += wave.linear_velocity * 0.8 + (wave.size)/2 * (-body.grav_dir)
 	if body is fish and wave.gotofloor.is_onfloor and body.weight_priority <= wave.size and !body.sleep_queue:
 		if wave.origin_summon != "fish":
 			body.wave = wave 
 		else:
 			body.statemachine.state_enterer(falling_enemy)
 			body.velocity *= 0
-			body.velocity += (wave.size*16/(body.weight_priority)) * 3 * (-body.grav_dir)
+			body.velocity += (wave.size*16/(body.weight_priority)) * 2 * (-body.grav_dir)
 		if (body.velocity.normalized()+ wave.linear_velocity.normalized()).length() > 0.8:
 			body.velocity += wave.linear_velocity * 0.8
 		else:

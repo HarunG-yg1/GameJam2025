@@ -4,6 +4,7 @@ static var damage : int = 2
 static var attack_time:float
 static var change_attack_chance: float = 0
 func Enter():
+		enemy.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Sound Effect Whoosh Sound (No Copyright).mp3",1.12,enemy.fish_settings.pitch,0.6)
 		enemy.hitting = true
 		attack_time = 0.5
 		enemy.velocity = (enemy.player.global_position-enemy.sprite.global_position).normalized()*enemy.JUMP_VELOCITY

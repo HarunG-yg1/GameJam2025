@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://fok7fwfmm78p"
+path="res://.godot/imported/SWORD SLASH SOUND EFFECT ｜ NO COPYRIGHT.mp3-9fc7c0363c35827f537b9aecd8ab3709.mp3str"
+
+[deps]
+
+source_file="res://sfx/SWORD SLASH SOUND EFFECT ｜ NO COPYRIGHT.mp3"
+dest_files=["res://.godot/imported/SWORD SLASH SOUND EFFECT ｜ NO COPYRIGHT.mp3-9fc7c0363c35827f537b9aecd8ab3709.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

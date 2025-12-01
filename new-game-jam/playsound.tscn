@@ -6,11 +6,16 @@
 script = ExtResource("1_eoab8")
 
 [node name="Node" type="AudioStreamPlayer2D" parent="."]
+pitch_scale = 0.5
 
 [node name="Node2" type="AudioStreamPlayer2D" parent="."]
+pitch_scale = 0.5
 
 [node name="Node3" type="AudioStreamPlayer2D" parent="."]
+pitch_scale = 0.5
 
 [node name="Node4" type="AudioStreamPlayer2D" parent="."]
+pitch_scale = 0.5
 
 [node name="Node5" type="AudioStreamPlayer2D" parent="."]
+pitch_scale = 0.5

@@ -8,7 +8,9 @@ func get_GuynStatemachine(guy,statemachine):
 	state_machine = statemachine
 
 func Enter():
+		
 		guy1.find_anim(self)
+		Playsound.get_playsound("res://sfx/Wii sports crowd hype.mp3",guy1.position,0,1,0.5)
 		style_duration = 1
 		guy1.on_air_time = 0.1
 		#guy1.velocity *= abs(Vector2(guy1.grav_dir.y,guy1.grav_dir.x))
@@ -29,16 +31,21 @@ func Process(_delta):
 			return moving
 		elif style_duration < 0.05:
 			return falling
-	#	if guy1.is_on_floor() :
+		if guy1.is_on_floor() :
 
-			#return moving
+			return moving
 		if guy1.hitting and guy1.hit_timer <=0.01 and guy1.on_wave == null:
 			return hit
 
 func Exit():
 		if style_duration < 0.05:
+			Playsound.get_playsound("res://sfx/Wii sports wow.mp3",guy1.position,0,1,0.5)
+			
+			guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/RIZZ Sound Effect.mp3",0.16,1,0.8)
 			print("yo thats fire")
-			guy1.hp_and_stuff.fishes += 3
-
+			guy1.hp_and_stuff.multiplier +=1
+			#guy1.hp_and_stuff.multiplier_bar.value = 100.0
+		else:
+			Playsound.get_playsound("res://sfx/Wii Sports - Groan Sound Effect.mp3",guy1.position,0,1,0.5)
 		guy1.styling = false
 		guy1.faling = false

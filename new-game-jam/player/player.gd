@@ -26,8 +26,12 @@ var run = false
 var finish_run = true
 
 var grav_dir := Vector2(0,1)
+@onready var wave_bar = $CanvasGroup/Wave_Bar
+
+
 @onready var collision = $CollisionShape2D
 @onready var hp_and_stuff =$hp_and_stuff
+
 @onready var aim = $aim
 @onready var sprite = $Sprite2D
 @onready var hurtbox = $Area2D
@@ -37,13 +41,20 @@ func _ready() -> void:
 	statemachine.player = self
 	statemachine.init()
 	sprite.play(full_state_name)
+	Finish.started = true
+	await get_tree().create_timer(1).timeout
+	Playsound.get_playsound("res://sfx/New folder/103b899d-6a29-48e3-bba6-123b9f71bfb1.wav",position)
+	
 func _process(delta: float) -> void:
-
+	
 	drown(delta)
-	if Input.is_action_just_pressed("reload"):
+	if Input.is_action_just_pressed("reload") and wave_charge <= 0:
 		wave_charge = 3
+		wave_bar.value = 100
 	if wave_charge > 0:
+		
 		wave_charge -= delta
+		wave_bar.value = (wave_charge/3) * 100
 	if Input.is_action_just_pressed("dash") and finish_run and !run and velocity.length()>1 and on_wave == null:
 		run = true
 		finish_run = false
@@ -62,7 +73,7 @@ func _process(delta: float) -> void:
 		styling = true
 		await get_tree().create_timer(1).timeout
 		styling = false
-	if Input.is_action_just_pressed("hit") and hit_timer >= 0.25:
+	if Input.is_action_just_pressed("hit") and hit_timer >= 0.4:
 		if hit_count == 1:
 			hit_count += 1
 		else:
@@ -70,7 +81,7 @@ func _process(delta: float) -> void:
 		hitting = true
 		hit_timer = 0
 
-	if hit_timer < 0.25 and hitting:
+	if hit_timer <= 0.4:
 		hit_timer += delta
 	elif hit_timer >= 0.25 and hitting:
 		hitting = false
@@ -88,10 +99,10 @@ func _process(delta: float) -> void:
 	else:
 		hurtbox.rotation = on_wave_dir.angle()
 	
-	if on_air_time < 0.2 and is_on_floor():
+	if on_air_time < 0.2 and is_on_floor() and on_wave == null:
 		direction =( Vector2(cos(get_floor_normal().angle() + deg_to_rad(90)),sin(get_floor_normal().angle() + deg_to_rad(90))) * Input.get_axis("ui_left","ui_right")).normalized() 
 
-	elif on_air_time >= 0.2 and !is_on_floor():
+	elif on_air_time >= 0.2 and !is_on_floor() and on_wave == null:
 		direction =  (abs(Vector2(grav_dir.y,grav_dir.x)) *  Input.get_axis("ui_left","ui_right")).normalized()
 
 	if on_wave != null:
@@ -111,7 +122,7 @@ func _physics_process(delta: float) -> void:
 func move(direct,modifier):
 		
 		if (direct.length()) > 0.0:
-			if last_dir != (abs(Vector2(grav_dir.y,grav_dir.x)) * direct).normalized():
+			if last_dir != (abs(Vector2(grav_dir.y,grav_dir.x)) * direct).normalized() and statemachine.state is not style:
 				last_dir = (abs(Vector2(grav_dir.y,grav_dir.x)) * direct).normalized()
 				find_anim(statemachine.state)
 				#print(statemachine.state)
@@ -132,7 +143,8 @@ func move(direct,modifier):
 				velocity -=  velocity /75
 			
 func summon_wave(normal,recorded_velocity,player_last_position):
-	#print((saved_velocity* normal))
+	wave_charge -= 0.5
+	Playsound.get_playsound("res://sfx/hard_kick.mp3",position,0.06,randf_range(0.5,1.5),0.75)
 	var additional_velocity : Vector2
 	var new_wave = original_wave.instantiate().duplicate()
 	new_wave.origin_summon = "Player"
@@ -155,10 +167,12 @@ func hit_at_target():
 	for i in hit_targets:
 		if i != null and ( i.on_air_time > 0.1 || i.statemachine.state is on_wave_enemy || i.was_hit > 0):
 			
-			i.hp_and_stuff.take_damage(1*velocity.length()/100,0)
+			i.hp_and_stuff.take_damage(1*(velocity.length()/100)*(1+(hp_and_stuff.multiplier/5)),0)
 			if i.hp_and_stuff.hp <= 0:
+				Finish.fish_caught +=  i.hp_and_stuff.MAX_HP / 10
 				hp_and_stuff.fishes += i.hp_and_stuff.MAX_HP / 10
-				print(hp_and_stuff.fishes)
+				hp_and_stuff.fish_label.text = "Fishes :"+ str(hp_and_stuff.fishes)
+				
 			if Input.is_action_pressed("ui_down"):
 				
 				i.velocity += (velocity/2 - (velocity.length() * grav_dir)) * (1/i.weight_priority)
@@ -209,7 +223,7 @@ func find_anim(the_state):
 		
 		if last_dir == Vector2.LEFT:
 			full_state_name = (str(the_state.name)+"_left")
-		elif last_dir == Vector2.RIGHT:
+		else:
 			full_state_name = (str(the_state.name)+"_right")
 		if the_state is hit:
 			full_state_name += ("_"+str(hit_count))
@@ -218,6 +232,7 @@ func find_anim(the_state):
 		
 	#print(full_state_name)
 	#sprite.animation = full_state_name
+	sprite.stop()
 	sprite.play(full_state_name)
 
 func tween_do_a_flip(the_sprite):

@@ -5,6 +5,7 @@ func get_GuynStatemachine(guy,statemachine):
 	guy1 = guy
 	state_machine = statemachine
 func Enter():
+		guy1.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Minecraft Water Splash Sound Effect   SD 480p.mp3",0.4,2,0.1)
 		guy1.find_anim(self)
 		pass
 func Process(_delta):

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://2bjs3jqsekq"
+path="res://.godot/imported/Lancer Splat Sound Effect (Deltarune).mp3-dbdb6f1ae38d5291c4814ac94d6c48f3.mp3str"
+
+[deps]
+
+source_file="res://sfx/New folder/Lancer Splat Sound Effect (Deltarune).mp3"
+dest_files=["res://.godot/imported/Lancer Splat Sound Effect (Deltarune).mp3-dbdb6f1ae38d5291c4814ac94d6c48f3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

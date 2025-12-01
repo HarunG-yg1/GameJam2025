@@ -15,7 +15,7 @@ var saved_position : Vector2
 var run = false
 var finish_run = true
 
-var grav_dir := Vector2(0,1)
+@export var grav_dir := Vector2(0,1)
 
 var recharge_stamina : bool = false
 
@@ -50,15 +50,22 @@ var weight_priority : int
 
 func _ready() -> void:
 	
+	statemachine.set_process(false)
+	set_process(false)
 	early_sprite_pos = sprite.position
 	fish_settings.mass_export(self)
 	statemachine.enemy = self
 	statemachine.init(states)
 	animated_sprite.play("default")
-
+	up_direction = -grav_dir
+	#if up_direction == Vector2(-1,0): #and !is_on_floor():
+	#	print(name)
+	$Label.text = name
 func _process(delta: float) -> void:
-	if sleep_queue and on_air_time == 0 and statemachine.state is not attack_enemy and statemachine.state is not falling_enemy:
-		
+	#if up_direction == Vector2(-1,0) and is_on_floor():
+#		print(name)
+	if sleep_queue and on_air_time < 0.2 and statemachine.state is not attack_enemy and statemachine.state is not falling_enemy and statemachine.state is not chase_enemy:
+		print(name)
 		statemachine.set_process(false)
 		set_process(false)
 		velocity *= 0
@@ -123,7 +130,7 @@ func move(direct,modifier):
 			else:
 				velocity -=  velocity /75 +  Vector2(0,Input.get_action_strength("ui_down")) * MAX_SPEED #+  Vector2(0,Input.get_action_strength("ui_down")) * MAX_SPEED
 func summon_wave(normal,recorded_velocity,player_last_position):
-	
+	Playsound.get_playsound("res://sfx/hard_kick.mp3",position,0.06,randf_range(0.5,1.5),0.75)
 	#print((saved_velocity* normal))
 	var additional_velocity : Vector2
 	var new_wave = original_wave.instantiate().duplicate()

@@ -15,14 +15,15 @@
 script = ExtResource("1_s0ioj")
 fish_type = "normal_fish"
 states = [ExtResource("2_6y4ug"), ExtResource("3_j27jh"), ExtResource("4_2080g"), ExtResource("5_4lqmp"), ExtResource("6_c5xht"), ExtResource("7_44x2a"), ExtResource("8_inm7g"), ExtResource("9_6y4ug")]
-MAX_SPEED = 300.0
+MAX_SPEED = 350.0
 JUMP_VELOCITY = 400
 max_wave_invulnerability_time = 4.0
 scale = Vector2(1, 1)
 dir_int = -1
 chase_stamina = 6.0
 weight_priority = 16
-hp = 20
+hp = 25
 texture = ExtResource("10_j27jh")
 sprite_scale = 3.0
+pitch = 1.0
 metadata/_custom_type_script = "uid://bgtrlrgdpxb4y"

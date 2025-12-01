@@ -20,6 +20,7 @@ func Process(_delta):
 				return [moving_enemy,jumpin_enemy][randi_range(0,1)]
 		enemy.move(enemy.direction,1)
 		if move_timer < 0:
+			enemy.hp_and_stuff.play_state_and_hurt_sound("res://sfx/Wii Sports - Groan Sound Effect.mp3",0,4*enemy.fish_settings.pitch,0.7)
 		#	print(enemy.is_on_floor())
 			if enemy.on_air_time <0.2:
 				return [idle_enemy,jumpin_enemy][randi_range(0,1)]			#	curent_time = move_timer
