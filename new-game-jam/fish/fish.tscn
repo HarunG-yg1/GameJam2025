@@ -193,7 +193,6 @@ animations = [{
 [node name="fish" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 4
-slide_on_ceiling = false
 floor_max_angle = 0.872665
 script = ExtResource("1_56uai")
 fish_settings = ExtResource("2_syiqg")

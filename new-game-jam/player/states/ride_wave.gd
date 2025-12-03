@@ -43,6 +43,10 @@ func Process(_delta):
 			return falling
 		if guy1.aim.harpoon:
 			return harpooning
+		
+		if guy1.hitting:
+			return hit
+		
 		if guy1.styling:
 			#guy1.velocity +=  guy1.JUMP_VELOCITY * (-guy1.grav_dir)
 			return style
